@@ -1,4 +1,9 @@
-// simpletype project dict_methods.go
+// Copyright 2012 Dobrosław Żybort
+//
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 package simpletype
 
 //=============================================================================
@@ -26,18 +31,16 @@ func (dict Dict) HasKey(key string) bool {
 	return false
 }
 
-// Returns a list of the dictionary's [key, value] list pairs
-func (dict Dict) Items() List {
-	list := NewList(len(dict))
-	i := 0
+// Returns a unordered list of the dictionary's [key, value] list pairs
+func (dict Dict) Items() []List {
+	list := []List{}
 	for key, value := range dict {
-		list[i] = List{key, value}
-		i++
+		list = append(list, List{key, value})
 	}
 	return list
 }
 
-// Returns a list of the dictionary's keys
+// Returns a list of the dictionary's keys, unordered
 func (dict Dict) Keys() List {
 	list := NewList(len(dict))
 	i := 0
@@ -47,6 +50,15 @@ func (dict Dict) Keys() List {
 	}
 	return list
 }
+
+// If the given key is in the dictionary, remove it and return its value,
+// else return val.
+//func (dict Dict) Pop(key string, val interface{}) interface{} {
+//}
+
+// Return and remove an random key-value pair as List from the dictionary.
+//func (dict Dict) PopItem() List {
+//}
 
 // Similar to Get(), but will set dict[key]=val if key is not already in dict
 func (dict Dict) SetDefault(key string, val interface{}) interface{} {
@@ -65,7 +77,7 @@ func (dict Dict) Update(dict2 Dict) {
 	}
 }
 
-//Returns a list of the dictionary's values
+//Returns a list of the dictionary's values, unordered
 func (dict Dict) Values() List {
 	list := NewList(len(dict))
 	i := 0

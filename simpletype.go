@@ -1,5 +1,12 @@
-// simpletype project simpletype.go
+// Copyright 2012 Dobrosław Żybort
+//
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 package simpletype
+
+import "fmt"
 
 // Simple list
 type List []interface{}
@@ -23,7 +30,7 @@ func NewDict() Dict {
 func DictFromKeys(list List, val interface{}) Dict {
 	newDict := NewDict()
 	for _, value := range list {
-		newDict[value.(string)] = val
+		newDict[fmt.Sprintf("%v", value)] = val
 	}
 	return newDict
 }
