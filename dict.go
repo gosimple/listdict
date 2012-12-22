@@ -8,43 +8,50 @@ package simpletype
 
 import "fmt"
 
-// Simple dict
+// Simple dict.
 type Dict map[string]interface{}
 
-// Return new Dict
+// Return new Dict.
 func NewDict() Dict {
 	return make(Dict)
 }
 
 //=============================================================================
 
-//Create a new dictionary with keys from list and values set to val.
-func DictFromKeys(list List, val interface{}) Dict {
+// DictFromKeys creates a new dictionary with keys from list and values set 
+// to defaultVal.
+func DictFromKeys(list List, defaultVal interface{}) Dict {
 	newDict := NewDict()
 	for _, value := range list {
-		newDict[fmt.Sprintf("%v", value)] = val
+		newDict[fmt.Sprintf("%v", value)] = defaultVal
 	}
 	return newDict
 }
 
 //=============================================================================
 
-// Removes all elements from the dictionary
+// Clear removes all elements from the dictionary.
 func (dict Dict) Clear() {
 	for key, _ := range dict {
 		delete(dict, key)
 	}
 }
 
-// Return value for the given key or val if key is not in the dictionary
-func (dict Dict) Get(key string, val interface{}) interface{} {
+// Get returns value for the given key or defaultVal if key is not in 
+// the dictionary.
+//		d := Dict{"one": 1, "two": 2}
+// 		d["one"]                 => 1
+// 		d.SetDefault("one", 4)   => 1
+// 		d.SetDefault("three", 3) => 3
+// 		// d = {'one': 1, 'two': 2}
+func (dict Dict) Get(key string, defaultVal interface{}) interface{} {
 	if dict.HasKey(key) {
 		return dict[key]
 	}
-	return val
+	return defaultVal
 }
 
-// Returns true if key is in the dictionary, false otherwise
+// HasKey returns true if key is in the dictionary, false otherwise.
 func (dict Dict) HasKey(key string) bool {
 	if _, ok := dict[key]; ok {
 		return true
@@ -52,7 +59,7 @@ func (dict Dict) HasKey(key string) bool {
 	return false
 }
 
-// Returns a unordered list of the dictionary's [key, value] list pairs
+// Items returns an unordered list of the dictionary's [key, value] pairs.
 func (dict Dict) Items() []List {
 	list := []List{}
 	for key, value := range dict {
@@ -61,7 +68,7 @@ func (dict Dict) Items() []List {
 	return list
 }
 
-// Returns a list of the dictionary's keys, unordered
+// Keys returns a list of the dictionary's keys, unordered.
 func (dict Dict) Keys() List {
 	list := NewList(len(dict))
 	i := 0
@@ -81,24 +88,30 @@ func (dict Dict) Keys() List {
 //func (dict Dict) PopItem() List {
 //}
 
-// Similar to Get(), but will set dict[key]=val if key is not already in dict
-func (dict Dict) SetDefault(key string, val interface{}) interface{} {
+// SetDefault is like Get but will set dict[key] to defaultVal if key is not 
+// already in dict.
+// 		d := Dict{"one": 1, "two": 2}
+// 		d["one"]                 => 1
+// 		d.SetDefault("one", 4)   => 1
+// 		d.SetDefault("three", 3) => 3
+// 		// d = {'one': 1, 'two': 2, 'three': 3}
+func (dict Dict) SetDefault(key string, defaultVal interface{}) interface{} {
 	if dict.HasKey(key) {
 		return dict[key]
 	}
-	dict[key] = val
-	return val
+	dict[key] = defaultVal
+	return defaultVal
 }
 
-// Update the dictionary with the key-value pairs in the dict2 dictionary
-// replacing current values and adding new if found.
+// Update updates the dictionary with the key-value pairs in the dict2 
+// dictionary replacing current values and adding new if found.
 func (dict Dict) Update(dict2 Dict) {
 	for key, value := range dict2 {
 		dict[key] = value
 	}
 }
 
-//Returns a list of the dictionary's values, unordered
+// Valuer returns a list of the dictionary's values, unordered.
 func (dict Dict) Values() List {
 	list := NewList(len(dict))
 	i := 0
