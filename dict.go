@@ -40,9 +40,9 @@ func (dict Dict) Clear() {
 // Get returns value for the given key or defaultVal if key is not in 
 // the dictionary.
 //		d := Dict{"one": 1, "two": 2}
-// 		d["one"]                 => 1
-// 		d.SetDefault("one", 4)   => 1
-// 		d.SetDefault("three", 3) => 3
+// 		d["one"]          => 1
+// 		d.Get("one", 4)   => 1
+// 		d.Get("three", 3) => 3
 // 		// d = {'one': 1, 'two': 2}
 func (dict Dict) Get(key string, defaultVal interface{}) interface{} {
 	if dict.HasKey(key) {
