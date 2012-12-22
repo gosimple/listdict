@@ -6,6 +6,27 @@
 
 package simpletype
 
+import "fmt"
+
+// Simple dict
+type Dict map[string]interface{}
+
+// Return new Dict
+func NewDict() Dict {
+	return make(Dict)
+}
+
+//=============================================================================
+
+//Create a new dictionary with keys from list and values set to val.
+func DictFromKeys(list List, val interface{}) Dict {
+	newDict := NewDict()
+	for _, value := range list {
+		newDict[fmt.Sprintf("%v", value)] = val
+	}
+	return newDict
+}
+
 //=============================================================================
 
 // Removes all elements from the dictionary

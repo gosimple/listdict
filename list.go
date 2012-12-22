@@ -5,3 +5,13 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 package simpletype
+
+// Simple list
+type List []interface{}
+
+// Return new List with specified length
+func NewList(length int) List {
+	return make(List, length)
+}
+
+//=============================================================================
