@@ -6,6 +6,8 @@
 
 package simpletype
 
+import "errors"
+
 // Simple list
 type List []interface{}
 
@@ -49,21 +51,56 @@ func (list List) Index(val interface{}) int {
 }
 
 // Insert an element at a given position. If the position is past the end 
-// of the list, append to the end.
-//list.insert(index int, val interface{})
+// of the list, append to the end, prepend if position smaller than 0.
+func (list *List) Insert(index int, val interface{}) {
+	if len(*list) > index {
+		if index < 0 {
+			index = 0
+		}
+		list2 := make(List, len(*list))
+		copy(list2, *list)
+		list2 = append(list2, 0)
+		copy(list2[index+1:],
+			list2[index:])
+		list2[index] = val
+		*list = list2
+	} else {
+		*list = append(*list, val)
+	}
+}
 
 // Remove and returns the last element in the list.
-//list.pop()
+func (list *List) Pop() (interface{}, error) {
+	if len(*list) > 0 {
+		list2 := make(List, len(*list))
+		copy(list2, *list)
+		listLen := len(list2)
+		index := listLen - 1
+		val := list2[listLen-1]
 
-// Remove and return the element at the given position in the list.
-//list.pop([i])
+		copy(list2[index:], list2[index+1:])
+		list2[listLen-1] = nil
+		list2 = list2[:listLen-1]
 
-// Remove the first element from the list whose value matches the given value. 
-// Error if no match is found.
-//list.remove(val) error
+		*list = list2
+		return val, nil
+	}
+	return nil, errors.New("Empty list")
+}
 
-// Reverse the elements of the list in place.
-//list.reverse()
+// Remove and returns the element at the given position in the list.
+//func (list *List ) PopItem(index int) (interface{}, error) {
+//}
 
-// Sort the list in place ordering elements from smallest to largest
-//list.sort()
+//// Remove the first element from the list whose value matches the given value. 
+//// Error if no match is found.
+//func (list *List) Remove(val interface{}) error {
+//}
+
+//// Reverse the elements of the list in place.
+//func (list *List) Reverse() {
+//}
+
+//// Sort the list in place ordering elements from smallest to largest.
+//func (list *List) Sort() {
+//}
