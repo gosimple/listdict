@@ -38,10 +38,11 @@ func (dict Dict) Clear() {
 }
 
 // Get returns value for the given key or defaultVal if key is not in 
-// the dictionary.
+// the dictionary. defaultVal should be same type as you expect to get.
 //		d := Dict{"one": 1, "two": 2}
 // 		d["one"]          => 1
 // 		d.Get("one", 4)   => 1
+//		d["three"]        => error
 // 		d.Get("three", 3) => 3
 // 		// d = {'one': 1, 'two': 2}
 func (dict Dict) Get(key string, defaultVal interface{}) interface{} {
@@ -89,10 +90,11 @@ func (dict Dict) Keys() List {
 //}
 
 // SetDefault is like Get but will set dict[key] to defaultVal if key is not 
-// already in dict.
+// already in dict. defaultVal should be same type as you expect to get.
 // 		d := Dict{"one": 1, "two": 2}
 // 		d["one"]                 => 1
 // 		d.SetDefault("one", 4)   => 1
+//		d["three"]               => error
 // 		d.SetDefault("three", 3) => 3
 // 		// d = {'one': 1, 'two': 2, 'three': 3}
 func (dict Dict) SetDefault(key string, defaultVal interface{}) interface{} {

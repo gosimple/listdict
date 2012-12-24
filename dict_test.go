@@ -7,7 +7,6 @@
 package simpletype
 
 import (
-	"fmt"
 	"testing"
 )
 
