@@ -3,7 +3,9 @@ simpletype
 
 Package simpletype implement similar to Python types: list and dict for Go
 
-This package bring list and dict to Go with most methods you can found 
+[Documentation online](http://godoc.org/bitbucket.org/matrixik/simpletype)
+
+This package bring list and dict to Go with most methods you can find 
 in Python.
 
 	dict := simpletype.Dict{"one": 1, "two": 2, "three": 3}
@@ -11,3 +13,29 @@ in Python.
 	if dict.HasKey("one") {
 		// Do something if dict have key "one"
 	}
+	
+	keys := dict.Keys()		// keys = [one two three]
+	val := dict.Values()	// val = [3 1 2]
+	// Keys() and Values() are unordered, same as in Python
+	
+Personaly I preffer to import this package with dot:
+
+	import . "bitbucket.org/matrixik/simpletype"
+	
+	dict := Dict{"one": 1, "two": 2, "three": 3}
+	list := List{1, 2, "three"}
+
+### Requests or bugs? 
+<https://bitbucket.org/matrixik/simpletype/issues>
+
+## Installation
+
+	go get bitbucket.org/matrixik/simpletype
+
+## License
+
+The source files are distributed under the 
+[Mozilla Public License, version 2.0](http://mozilla.org/MPL/2.0/),
+unless otherwise noted.  
+Please read the [FAQ](http://www.mozilla.org/MPL/2.0/FAQ.html)
+if you have further questions regarding the license.
