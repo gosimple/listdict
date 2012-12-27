@@ -35,6 +35,28 @@ func (list List) Count(value interface{}) int {
 	return counter
 }
 
+// Delete removes element with given index from the list.
+func (list *List) Delete(index int) {
+	if len(*list) <= 0 {
+		panic("Delete from empty list")
+	}
+	if index < 0 {
+		panic("Index out of bounds")
+	}
+
+	list2 := make(List, len(*list))
+	copy(list2, *list)
+	listLen := len(list2)
+	if index >= listLen {
+		panic("Index out of range")
+	}
+
+	copy(list2[index:], list2[index+1:])
+	list2[listLen-1] = nil
+	list2 = list2[:listLen-1]
+	*list = list2
+}
+
 // Extend one list with the contents of the other list.
 func (list *List) Extend(otherList List) {
 	for _, value := range otherList {
@@ -82,7 +104,8 @@ func (list *List) Pop() interface{} {
 	list2 := make(List, len(*list))
 	copy(list2, *list)
 	listLen := len(list2)
-	val, list2 := list2[listLen-1], list2[:listLen-1]
+	val := list2[listLen-1]
+	list2.Delete(listLen - 1)
 
 	*list = list2
 	return val
@@ -105,18 +128,31 @@ func (list *List) PopItem(index int) interface{} {
 	}
 	val := list2[index]
 
-	copy(list2[index:], list2[index+1:])
-	list2[listLen-1] = nil
-	list2 = list2[:listLen-1]
+	list2.Delete(index)
 
 	*list = list2
 	return val
 }
 
-//// Remove the first element from the list whose value matches the given value. 
-//// Error if no match is found.
-//func (list *List) Remove(val interface{}) error {
-//}
+// Remove the first element from the list whose value matches the given value. 
+// Error if no match is found.
+func (list *List) Remove(val interface{}) error {
+	errorString := fmt.Sprintf("%v is not in list", val)
+	if len(*list) <= 0 {
+		return errors.New(errorString)
+	}
+
+	list2 := make(List, len(*list))
+	copy(list2, *list)
+	for index, listValue := range list2 {
+		if listValue == val {
+			list2.Delete(index)
+			*list = list2
+			return nil
+		}
+	}
+	return errors.New(errorString)
+}
 
 //// Reverse the elements of the list in place.
 //func (list *List) Reverse() {
