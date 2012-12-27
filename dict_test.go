@@ -121,6 +121,36 @@ func TestDictKeys(t *testing.T) {
 	}
 }
 
+func TestDictPop(t *testing.T) {
+	dict := Dict{"one": 1, "two": 2, "three": 3}
+
+	goodDict := Dict{"two": 2, "three": 3}
+
+	val := dict.Pop("one", 0)
+	if val != 1 || !reflect.DeepEqual(dict, goodDict) {
+		t.Errorf("Should be %v, got %v", goodDict, dict)
+	}
+	val = dict.Pop("four", 0)
+	if val != 0 || !reflect.DeepEqual(dict, goodDict) {
+		t.Errorf("Should be %v, got %v", goodDict, dict)
+	}
+}
+
+func TestDictPopItem(t *testing.T) {
+	dict := Dict{"one": 1}
+
+	goodDict := Dict{}
+	goodVal := List{"one", 1}
+
+	val := dict.PopItem()
+	if !reflect.DeepEqual(val, goodVal) || !reflect.DeepEqual(dict, goodDict) {
+		t.Errorf(
+			"Should be %v and %v, got %v and %v",
+			goodVal, goodDict, val, dict,
+		)
+	}
+}
+
 func TestDictSetDefault(t *testing.T) {
 	dict := Dict{"one": 1, "two": 2, "three": 3}
 

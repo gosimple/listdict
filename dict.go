@@ -6,7 +6,10 @@
 
 package simpletype
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 // Simple dict.
 type Dict map[string]interface{}
@@ -60,6 +63,11 @@ func (dict Dict) HasKey(key string) bool {
 	return false
 }
 
+// IsEqual returns true if dicts are equal.
+func (dict Dict) IsEqual(otherDict Dict) bool {
+	return reflect.DeepEqual(dict, otherDict)
+}
+
 // Items returns an unordered list of the dictionary's [key, value] pairs.
 func (dict Dict) Items() []List {
 	list := []List{}
@@ -81,13 +89,32 @@ func (dict Dict) Keys() List {
 }
 
 // If the given key is in the dictionary, remove it and return its value,
-// else return val.
-//func (dict Dict) Pop(key string, val interface{}) interface{} {
-//}
+// else return defaultVal. defaultVal should be same type as you expect to get.
+func (dict Dict) Pop(key string, defaultVal interface{}) interface{} {
+	if len(dict) <= 0 {
+		panic("Pop from empty list")
+	}
+	if dict.HasKey(key) {
+		val := dict[key]
+		delete(dict, key)
+		return val
+	}
+	return defaultVal
+}
 
-// Return and remove an random key-value pair as List from the dictionary.
-//func (dict Dict) PopItem() List {
-//}
+// Return and remove a random key-value pair as List from the dictionary.
+func (dict Dict) PopItem() List {
+	if len(dict) <= 0 {
+		panic("PopItem from empty list")
+	}
+	for key, value := range dict {
+		delete(dict, key)
+		list := List{key, value}
+		return list
+	}
+	return nil
+
+}
 
 // SetDefault is like Get but will set dict[key] to defaultVal if key is not 
 // already in dict. defaultVal should be same type as you expect to get.
