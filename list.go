@@ -6,7 +6,10 @@
 
 package simpletype
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 // Simple list
 type List []interface{}
@@ -41,27 +44,28 @@ func (list *List) Extend(otherList List) {
 
 // Index returns the index of the first item in the list whose value is val.
 // It is -1 if there is no such item.
-func (list List) Index(val interface{}) int {
+func (list List) Index(val interface{}) (int, error) {
 	for index, listValue := range list {
 		if listValue == val {
-			return index
+			return index, nil
 		}
 	}
-	return -1
+	errorString := fmt.Sprintf("%v is not in list", val)
+	return -1, errors.New(errorString)
 }
 
 // Insert an element at a given position. If the position is past the end 
-// of the list, append to the end, prepend if position smaller than 0.
+// of the list, append to the end.
 func (list *List) Insert(index int, val interface{}) {
+	if index < 0 {
+		panic("Index out of bounds")
+	}
+
 	if len(*list) > index {
-		if index < 0 {
-			index = 0
-		}
 		list2 := make(List, len(*list))
 		copy(list2, *list)
 		list2 = append(list2, 0)
-		copy(list2[index+1:],
-			list2[index:])
+		copy(list2[index+1:], list2[index:])
 		list2[index] = val
 		*list = list2
 	} else {
@@ -70,27 +74,44 @@ func (list *List) Insert(index int, val interface{}) {
 }
 
 // Remove and returns the last element in the list.
-func (list *List) Pop() (interface{}, error) {
-	if len(*list) > 0 {
-		list2 := make(List, len(*list))
-		copy(list2, *list)
-		listLen := len(list2)
-		index := listLen - 1
-		val := list2[listLen-1]
-
-		copy(list2[index:], list2[index+1:])
-		list2[listLen-1] = nil
-		list2 = list2[:listLen-1]
-
-		*list = list2
-		return val, nil
+func (list *List) Pop() interface{} {
+	if len(*list) <= 0 {
+		panic("Pop from empty list")
 	}
-	return nil, errors.New("Empty list")
+
+	list2 := make(List, len(*list))
+	copy(list2, *list)
+	listLen := len(list2)
+	val, list2 := list2[listLen-1], list2[:listLen-1]
+
+	*list = list2
+	return val
 }
 
 // Remove and returns the element at the given position in the list.
-//func (list *List ) PopItem(index int) (interface{}, error) {
-//}
+func (list *List) PopItem(index int) interface{} {
+	if len(*list) <= 0 {
+		panic("PopItem from empty list")
+	}
+	if index < 0 {
+		panic("Index out of bounds")
+	}
+
+	list2 := make(List, len(*list))
+	copy(list2, *list)
+	listLen := len(list2)
+	if index >= listLen {
+		panic("Index out of range")
+	}
+	val := list2[index]
+
+	copy(list2[index:], list2[index+1:])
+	list2[listLen-1] = nil
+	list2 = list2[:listLen-1]
+
+	*list = list2
+	return val
+}
 
 //// Remove the first element from the list whose value matches the given value. 
 //// Error if no match is found.
