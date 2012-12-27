@@ -154,9 +154,18 @@ func (list *List) Remove(val interface{}) error {
 	return errors.New(errorString)
 }
 
-//// Reverse the elements of the list in place.
-//func (list *List) Reverse() {
-//}
+// Reverse the elements of the list in place.
+func (list *List) Reverse() {
+	list2 := make(List, len(*list))
+	copy(list2, *list)
+	maxIndex := len(list2) - 1
+	for index := 0; index < (maxIndex/2)+1; index++ {
+		listValue := list2[index]
+		list2[index] = list2[maxIndex-index]
+		list2[maxIndex-index] = listValue
+	}
+	*list = list2
+}
 
 //// Sort the list in place ordering elements from smallest to largest.
 //func (list *List) Sort() {
