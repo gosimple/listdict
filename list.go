@@ -9,6 +9,7 @@ package simpletype
 import (
 	"errors"
 	"fmt"
+	"reflect"
 )
 
 // Simple list
@@ -95,6 +96,11 @@ func (list *List) Insert(index int, val interface{}) {
 	}
 }
 
+// IsEqual returns true if lists are equal.
+func (list List) IsEqual(otherList List) bool {
+	return reflect.DeepEqual(list, otherList)
+}
+
 // Remove and returns the last element in the list.
 func (list *List) Pop() interface{} {
 	if len(*list) <= 0 {
@@ -160,13 +166,12 @@ func (list *List) Reverse() {
 	copy(list2, *list)
 	maxIndex := len(list2) - 1
 	for index := 0; index < (maxIndex/2)+1; index++ {
-		listValue := list2[index]
-		list2[index] = list2[maxIndex-index]
-		list2[maxIndex-index] = listValue
+		list2[index], list2[maxIndex-index] =
+			list2[maxIndex-index], list2[index]
 	}
 	*list = list2
 }
 
-//// Sort the list in place ordering elements from smallest to largest.
+// Sort the list in place ordering elements from smallest to largest.
 //func (list *List) Sort() {
 //}

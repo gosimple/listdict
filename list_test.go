@@ -134,20 +134,20 @@ func TestListReverse(t *testing.T) {
 	}
 }
 
-func TestListSort(t *testing.T) {
-	list := List{2, 1, 3}
-	list.Sort()
+//func TestListSort(t *testing.T) {
+//	list := List{2, 1, 3}
+//	list.Sort()
 
-	goodList := List{1, 2, 3}
-	if !reflect.DeepEqual(list, goodList) {
-		t.Errorf("Error when sorting, should be %v, got %v", goodList, list)
-	}
+//	goodList := List{1, 2, 3}
+//	if !reflect.DeepEqual(list, goodList) {
+//		t.Errorf("Error when sorting, should be %v, got %v", goodList, list)
+//	}
 
-	list2 := List{"two", 1, 3}
-	list2.Sort()
+//	list2 := List{"two", 1, 3}
+//	list2.Sort()
 
-	goodList2 := List{1, 3, "two"}
-	if !reflect.DeepEqual(list2, goodList2) {
-		t.Errorf("Error when sorting, should be %v, got %v", goodList2, list2)
-	}
-}
+//	goodList2 := List{1, 3, "two"}
+//	if !reflect.DeepEqual(list2, goodList2) {
+//		t.Errorf("Error when sorting, should be %v, got %v", goodList2, list2)
+//	}
+//}
