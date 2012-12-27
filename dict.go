@@ -113,7 +113,7 @@ func (dict Dict) Update(dict2 Dict) {
 	}
 }
 
-// Valuer returns a list of the dictionary's values, unordered.
+// Values returns a list of the dictionary's values, unordered.
 func (dict Dict) Values() List {
 	list := NewList(len(dict))
 	i := 0

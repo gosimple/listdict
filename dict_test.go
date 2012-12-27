@@ -7,6 +7,7 @@
 package simpletype
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -15,27 +16,9 @@ func TestDictFromKeys(t *testing.T) {
 	dict := DictFromKeys(list, nil)
 
 	goodDict := Dict{"one": nil, "two": nil, "three": nil}
-	if len(dict) != len(goodDict) {
-		t.Errorf(
-			"New dict length should be %v, got %v",
-			len(goodDict),
-			len(dict),
-		)
-	}
-	founded := 0
-	for goodKey, goodValue := range goodDict {
-		for dictKey, dictValue := range dict {
-			if goodKey == dictKey && goodValue == dictValue {
-				founded++
-			}
-		}
-	}
-	if founded != len(dict) {
-		t.Errorf(
-			"Should found %v same dict elements, got %v",
-			len(goodDict),
-			len(dict),
-		)
+
+	if !reflect.DeepEqual(dict, goodDict) {
+		t.Errorf("Should be %v, got %v", goodDict, dict)
 	}
 }
 
@@ -94,7 +77,7 @@ func TestDictItems(t *testing.T) {
 	founded := 0
 	for _, listItem := range goodItems {
 		for _, dictItem := range itemList {
-			if dictItem[0] == listItem[0] && dictItem[1] == listItem[1] {
+			if reflect.DeepEqual(dictItem, listItem) {
 				founded++
 			}
 		}
@@ -156,16 +139,23 @@ func TestDictSetDefault(t *testing.T) {
 	}
 }
 
-/*
 func TestDictUpdate(t *testing.T) {
 	dict := Dict{"one": 1, "two": 2, "three": 3}
 	dict.Update(Dict{"one": 0, "four": 4})
-	fmt.Println(dict)
-	//dict = {'one': 0, 'two': 2, 'three': 3, 'four': 4}
+
+	goodDict := Dict{"one": 0, "two": 2, "three": 3, "four": 4}
+
+	if !reflect.DeepEqual(dict, goodDict) {
+		t.Errorf("Error when updating, should be %v, got %v", goodDict, dict)
+	}
+
 	dict.Update(Dict{"one": 1, "five": 5})
-	fmt.Println(dict)
-	//dict = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5}
-} */
+	goodDict2 := Dict{"one": 1, "two": 2, "three": 3, "four": 4, "five": 5}
+
+	if !reflect.DeepEqual(dict, goodDict2) {
+		t.Errorf("Error when updating, should be %v, got %v", goodDict2, dict)
+	}
+}
 
 func TestDictValues(t *testing.T) {
 	dict := Dict{"one": 1, "two": 2, "three": 3}
