@@ -7,6 +7,7 @@
 package simpletype
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 )
@@ -90,29 +91,29 @@ func (dict Dict) Keys() List {
 
 // If the given key is in the dictionary, remove it and return its value,
 // else return defaultVal. defaultVal should be same type as you expect to get.
-func (dict Dict) Pop(key string, defaultVal interface{}) interface{} {
+func (dict Dict) Pop(key string, defaultVal interface{}) (interface{}, error) {
 	if len(dict) <= 0 {
-		panic("Pop from empty list")
+		return nil, errors.New("Pop from empty list")
 	}
 	if dict.HasKey(key) {
 		val := dict[key]
 		delete(dict, key)
-		return val
+		return val, nil
 	}
-	return defaultVal
+	return defaultVal, nil
 }
 
 // Return and remove a random key-value pair as List from the dictionary.
-func (dict Dict) PopItem() List {
+func (dict Dict) PopItem() (List, error) {
 	if len(dict) <= 0 {
-		panic("PopItem from empty list")
+		return nil, errors.New("PopItem from empty list")
 	}
 	for key, value := range dict {
 		delete(dict, key)
 		list := List{key, value}
-		return list
+		return list, nil
 	}
-	return nil
+	return nil, nil
 
 }
 

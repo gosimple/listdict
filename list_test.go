@@ -88,20 +88,20 @@ func TestListInsert(t *testing.T) {
 
 func TestListPop(t *testing.T) {
 	list := List{"one", "two", "three"}
-	item := list.Pop()
+	item, err := list.Pop()
 
 	goodList := List{"one", "two"}
-	if item != "three" || !reflect.DeepEqual(list, goodList) {
+	if item != "three" || !reflect.DeepEqual(list, goodList) || err != nil {
 		t.Errorf("Error when poping, should be 'three', got %v", item)
 	}
 }
 
 func TestListPopItem(t *testing.T) {
 	list := List{"one", "two", "three"}
-	item := list.PopItem(0)
+	item, err := list.PopItem(0)
 
 	goodList := List{"two", "three"}
-	if item != "one" || !reflect.DeepEqual(list, goodList) {
+	if item != "one" || !reflect.DeepEqual(list, goodList) || err != nil {
 		t.Errorf("Error when poping item, should be 'one', got %v", item)
 	}
 }
@@ -111,7 +111,7 @@ func TestListRemove(t *testing.T) {
 	err := list.Remove("two")
 
 	goodList := List{"one", "three", "two"}
-	if err != nil || !reflect.DeepEqual(list, goodList) {
+	if !reflect.DeepEqual(list, goodList) || err != nil {
 		t.Errorf("Error when removing, should be %v, got %v", goodList, list)
 	}
 

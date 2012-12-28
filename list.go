@@ -37,25 +37,26 @@ func (list List) Count(value interface{}) int {
 }
 
 // Delete removes element with given index from the list.
-func (list *List) Delete(index int) {
+func (list *List) Delete(index int) error {
 	if len(*list) <= 0 {
-		panic("Delete from empty list")
+		return errors.New("Delete from empty list")
 	}
 	if index < 0 {
-		panic("Index out of bounds")
+		return errors.New("Index out of bounds")
 	}
 
 	list2 := make(List, len(*list))
 	copy(list2, *list)
 	listLen := len(list2)
 	if index >= listLen {
-		panic("Index out of range")
+		return errors.New("Index out of range")
 	}
 
 	copy(list2[index:], list2[index+1:])
 	list2[listLen-1] = nil
 	list2 = list2[:listLen-1]
 	*list = list2
+	return nil
 }
 
 // Extend one list with the contents of the other list.
@@ -79,9 +80,9 @@ func (list List) Index(val interface{}) (int, error) {
 
 // Insert an element at a given position. If the position is past the end 
 // of the list, append to the end.
-func (list *List) Insert(index int, val interface{}) {
+func (list *List) Insert(index int, val interface{}) error {
 	if index < 0 {
-		panic("Index out of bounds")
+		return errors.New("Index out of bounds")
 	}
 
 	if len(*list) > index {
@@ -94,6 +95,7 @@ func (list *List) Insert(index int, val interface{}) {
 	} else {
 		*list = append(*list, val)
 	}
+	return nil
 }
 
 // IsEqual returns true if lists are equal.
@@ -102,9 +104,9 @@ func (list List) IsEqual(otherList List) bool {
 }
 
 // Remove and returns the last element in the list.
-func (list *List) Pop() interface{} {
+func (list *List) Pop() (interface{}, error) {
 	if len(*list) <= 0 {
-		panic("Pop from empty list")
+		return nil, errors.New("Pop from empty list")
 	}
 
 	list2 := make(List, len(*list))
@@ -114,30 +116,30 @@ func (list *List) Pop() interface{} {
 	list2.Delete(listLen - 1)
 
 	*list = list2
-	return val
+	return val, nil
 }
 
 // Remove and returns the element at the given position in the list.
-func (list *List) PopItem(index int) interface{} {
+func (list *List) PopItem(index int) (interface{}, error) {
 	if len(*list) <= 0 {
-		panic("PopItem from empty list")
+		return nil, errors.New("PopItem from empty list")
 	}
 	if index < 0 {
-		panic("Index out of bounds")
+		return nil, errors.New("Index out of bounds")
 	}
 
 	list2 := make(List, len(*list))
 	copy(list2, *list)
 	listLen := len(list2)
 	if index >= listLen {
-		panic("Index out of range")
+		return nil, errors.New("Index out of range")
 	}
 	val := list2[index]
 
 	list2.Delete(index)
 
 	*list = list2
-	return val
+	return val, nil
 }
 
 // Remove the first element from the list whose value matches the given value. 

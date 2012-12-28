@@ -126,12 +126,12 @@ func TestDictPop(t *testing.T) {
 
 	goodDict := Dict{"two": 2, "three": 3}
 
-	val := dict.Pop("one", 0)
-	if val != 1 || !reflect.DeepEqual(dict, goodDict) {
+	val, err := dict.Pop("one", 0)
+	if val != 1 || !reflect.DeepEqual(dict, goodDict) || err != nil {
 		t.Errorf("Should be %v, got %v", goodDict, dict)
 	}
-	val = dict.Pop("four", 0)
-	if val != 0 || !reflect.DeepEqual(dict, goodDict) {
+	val, err = dict.Pop("four", 0)
+	if val != 0 || !reflect.DeepEqual(dict, goodDict) || err != nil {
 		t.Errorf("Should be %v, got %v", goodDict, dict)
 	}
 }
@@ -142,8 +142,10 @@ func TestDictPopItem(t *testing.T) {
 	goodDict := Dict{}
 	goodVal := List{"one", 1}
 
-	val := dict.PopItem()
-	if !reflect.DeepEqual(val, goodVal) || !reflect.DeepEqual(dict, goodDict) {
+	val, err := dict.PopItem()
+	if !reflect.DeepEqual(val, goodVal) ||
+		!reflect.DeepEqual(dict, goodDict) ||
+		err != nil {
 		t.Errorf(
 			"Should be %v and %v, got %v and %v",
 			goodVal, goodDict, val, dict,
