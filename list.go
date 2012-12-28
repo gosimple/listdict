@@ -45,17 +45,14 @@ func (list *List) Delete(index int) error {
 		return errors.New("Index out of bounds")
 	}
 
-	list2 := make(List, len(*list))
-	copy(list2, *list)
-	listLen := len(list2)
+	listLen := len(*list)
 	if index >= listLen {
 		return errors.New("Index out of range")
 	}
 
-	copy(list2[index:], list2[index+1:])
-	list2[listLen-1] = nil
-	list2 = list2[:listLen-1]
-	*list = list2
+	copy((*list)[index:], (*list)[index+1:])
+	(*list)[listLen-1] = nil
+	*list = (*list)[:listLen-1]
 	return nil
 }
 
@@ -86,12 +83,9 @@ func (list *List) Insert(index int, val interface{}) error {
 	}
 
 	if len(*list) > index {
-		list2 := make(List, len(*list))
-		copy(list2, *list)
-		list2 = append(list2, 0)
-		copy(list2[index+1:], list2[index:])
-		list2[index] = val
-		*list = list2
+		*list = append(*list, 0)
+		copy((*list)[index+1:], (*list)[index:])
+		(*list)[index] = val
 	} else {
 		*list = append(*list, val)
 	}
@@ -109,13 +103,10 @@ func (list *List) Pop() (interface{}, error) {
 		return nil, errors.New("Pop from empty list")
 	}
 
-	list2 := make(List, len(*list))
-	copy(list2, *list)
-	listLen := len(list2)
-	val := list2[listLen-1]
-	list2.Delete(listLen - 1)
+	listLen := len(*list)
+	val := (*list)[listLen-1]
+	(*list).Delete(listLen - 1)
 
-	*list = list2
 	return val, nil
 }
 
@@ -128,17 +119,14 @@ func (list *List) PopItem(index int) (interface{}, error) {
 		return nil, errors.New("Index out of bounds")
 	}
 
-	list2 := make(List, len(*list))
-	copy(list2, *list)
-	listLen := len(list2)
+	listLen := len(*list)
 	if index >= listLen {
 		return nil, errors.New("Index out of range")
 	}
-	val := list2[index]
+	val := (*list)[index]
 
-	list2.Delete(index)
+	(*list).Delete(index)
 
-	*list = list2
 	return val, nil
 }
 
@@ -150,12 +138,9 @@ func (list *List) Remove(val interface{}) error {
 		return errors.New(errorString)
 	}
 
-	list2 := make(List, len(*list))
-	copy(list2, *list)
-	for index, listValue := range list2 {
+	for index, listValue := range *list {
 		if listValue == val {
-			list2.Delete(index)
-			*list = list2
+			(*list).Delete(index)
 			return nil
 		}
 	}
@@ -164,14 +149,11 @@ func (list *List) Remove(val interface{}) error {
 
 // Reverse the elements of the list in place.
 func (list *List) Reverse() {
-	list2 := make(List, len(*list))
-	copy(list2, *list)
-	maxIndex := len(list2) - 1
+	maxIndex := len(*list) - 1
 	for index := 0; index < (maxIndex/2)+1; index++ {
-		list2[index], list2[maxIndex-index] =
-			list2[maxIndex-index], list2[index]
+		(*list)[index], (*list)[maxIndex-index] =
+			(*list)[maxIndex-index], (*list)[index]
 	}
-	*list = list2
 }
 
 // Sort the list in place ordering elements from smallest to largest.
