@@ -17,13 +17,6 @@ in Python.
 	keys := dict.Keys()		// keys = [one two three]
 	val := dict.Values()	// val = [3 1 2]
 	// Keys() and Values() are unordered, same as in Python
-	
-Personaly I preffer to import this package with dot:
-
-	import . "bitbucket.org/matrixik/simpletype"
-	
-	dict := Dict{"one": 1, "two": 2, "three": 3}
-	list := List{1, 2, "three"}
 
 ### Requests or bugs? 
 <https://bitbucket.org/matrixik/simpletype/issues>
