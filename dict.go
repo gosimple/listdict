@@ -43,7 +43,7 @@ func (dict Dict) Clear() {
 
 // Get returns value for the given key or defaultVal if key is not in 
 // the dictionary. defaultVal should be same type as you expect to get.
-//		d := Dict{"one": 1, "two": 2}
+//		d := simpletype.Dict{"one": 1, "two": 2}
 // 		d["one"]          => 1
 // 		d.Get("one", 4)   => 1
 //		d["three"]        => error
@@ -119,7 +119,7 @@ func (dict Dict) PopItem() (List, error) {
 
 // SetDefault is like Get but will set dict[key] to defaultVal if key is not 
 // already in dict. defaultVal should be same type as you expect to get.
-// 		d := Dict{"one": 1, "two": 2}
+// 		d := simpletype.Dict{"one": 1, "two": 2}
 // 		d["one"]                 => 1
 // 		d.SetDefault("one", 4)   => 1
 //		d["three"]               => error
