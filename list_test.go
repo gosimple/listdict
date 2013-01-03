@@ -24,7 +24,8 @@ var listAppendTests = []struct {
 
 func TestListAppend(t *testing.T) {
 	for index, lat := range listAppendTests {
-		list := lat.in
+		list := List{}
+		list = append(list, lat.in...)
 		list.Append(lat.val)
 		if !reflect.DeepEqual(list, lat.out) {
 			t.Errorf(
@@ -71,7 +72,8 @@ var listDeleteTests = []struct {
 
 func TestListDelete(t *testing.T) {
 	for index, ldt := range listDeleteTests {
-		list := ldt.in
+		list := List{}
+		list = append(list, ldt.in...)
 		err := list.Delete(ldt.val)
 		if err != ldt.outError {
 			t.Errorf(
@@ -100,7 +102,8 @@ var listExtendTests = []struct {
 
 func TestListExtend(t *testing.T) {
 	for index, let := range listExtendTests {
-		list := let.in
+		list := List{}
+		list = append(list, let.in...)
 		list.Extend(let.otherList)
 		if !reflect.DeepEqual(list, let.out) {
 			t.Errorf(
@@ -150,7 +153,8 @@ var listInsertTests = []struct {
 
 func TestListInsert(t *testing.T) {
 	for index, lit := range listInsertTests {
-		list := lit.in
+		list := List{}
+		list = append(list, lit.in...)
 		err := list.Insert(lit.index, lit.val)
 		if err != lit.outError {
 			t.Errorf(
@@ -179,7 +183,8 @@ var listPopTests = []struct {
 
 func TestListPop(t *testing.T) {
 	for index, lpt := range listPopTests {
-		list := lpt.in
+		list := List{}
+		list = append(list, lpt.in...)
 		item, err := list.Pop()
 		if item != lpt.out || err != lpt.outError {
 			t.Errorf(
@@ -208,7 +213,8 @@ var listPopItemTests = []struct {
 
 func TestListPopItem(t *testing.T) {
 	for index, lpt := range listPopItemTests {
-		list := lpt.in
+		list := List{}
+		list = append(list, lpt.in...)
 		item, err := list.PopItem(lpt.index)
 		if item != lpt.out || err != lpt.outError {
 			t.Errorf(
@@ -218,7 +224,7 @@ func TestListPopItem(t *testing.T) {
 		if !reflect.DeepEqual(list, lpt.outList) {
 			t.Errorf(
 				"%d. %v.PopItem(%d) => out list = %v, want %v",
-				index, lpt.in, list, lpt.outList)
+				index, lpt.in, lpt.index, list, lpt.outList)
 		}
 	}
 }
@@ -238,7 +244,8 @@ var listRemoveTests = []struct {
 
 func TestListRemove(t *testing.T) {
 	for index, lrt := range listRemoveTests {
-		list := lrt.in
+		list := List{}
+		list = append(list, lrt.in...)
 		err := list.Remove(lrt.val)
 		if err != lrt.out {
 			t.Errorf(
@@ -265,7 +272,8 @@ var listReverseTests = []struct {
 
 func TestListReverse(t *testing.T) {
 	for index, lrt := range listReverseTests {
-		list := lrt.in
+		list := List{}
+		list = append(list, lrt.in...)
 		list.Reverse()
 		if !reflect.DeepEqual(list, lrt.out) {
 			t.Errorf(
@@ -289,7 +297,8 @@ func TestListReverse(t *testing.T) {
 
 //func TestListSort(t *testing.T) {
 //	for index, lst := range listSortTests {
-//		list := lst.in
+//		list := List{}
+//      list = append(list, lst.in...)
 //		list.Sort()
 //		if !reflect.DeepEqual(list, lst.out) {
 //			t.Errorf(
