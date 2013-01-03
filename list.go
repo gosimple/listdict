@@ -20,6 +20,17 @@ func NewList(length int) List {
 	return make(List, length)
 }
 
+var (
+	// ErrRange is returned when index is bigger than list length
+	ErrRange = errors.New("Index out of range")
+	// ErrBounds is returned when index is smaller than 0
+	ErrBounds = errors.New("Index out of bounds")
+	// ErrRemoveFromEmptyList is returned when user want to remove element
+	// from empty list
+	ErrRemoveFromEmptyList = errors.
+				New("Trying to remove element from empty list")
+)
+
 //=============================================================================
 
 // Append adds an element to the end of the list.
@@ -39,15 +50,15 @@ func (list List) Count(value interface{}) int {
 // Delete removes element with given index from the list.
 func (list *List) Delete(index int) error {
 	if len(*list) <= 0 {
-		return errors.New("Delete from empty list")
+		return ErrRemoveFromEmptyList
 	}
 	if index < 0 {
-		return errors.New("Index out of bounds")
+		return ErrBounds
 	}
 
 	listLen := len(*list)
 	if index >= listLen {
-		return errors.New("Index out of range")
+		return ErrRange
 	}
 
 	copy((*list)[index:], (*list)[index+1:])
@@ -79,7 +90,7 @@ func (list List) Index(val interface{}) (int, error) {
 // of the list, append to the end.
 func (list *List) Insert(index int, val interface{}) error {
 	if index < 0 {
-		return errors.New("Index out of bounds")
+		return ErrBounds
 	}
 
 	if len(*list) > index {
@@ -100,7 +111,7 @@ func (list List) IsEqual(otherList List) bool {
 // Remove and returns the last element in the list.
 func (list *List) Pop() (interface{}, error) {
 	if len(*list) <= 0 {
-		return nil, errors.New("Pop from empty list")
+		return nil, ErrRemoveFromEmptyList
 	}
 
 	listLen := len(*list)
@@ -113,15 +124,15 @@ func (list *List) Pop() (interface{}, error) {
 // Remove and returns the element at the given position in the list.
 func (list *List) PopItem(index int) (interface{}, error) {
 	if len(*list) <= 0 {
-		return nil, errors.New("PopItem from empty list")
+		return nil, ErrRemoveFromEmptyList
 	}
 	if index < 0 {
-		return nil, errors.New("Index out of bounds")
+		return nil, ErrBounds
 	}
 
 	listLen := len(*list)
 	if index >= listLen {
-		return nil, errors.New("Index out of range")
+		return nil, ErrRange
 	}
 	val := (*list)[index]
 
