@@ -160,10 +160,12 @@ func (list *List) Remove(val interface{}) error {
 
 // Reverse the elements of the list in place.
 func (list *List) Reverse() {
-	maxIndex := len(*list) - 1
-	for index := 0; index < (maxIndex/2)+1; index++ {
-		(*list)[index], (*list)[maxIndex-index] =
-			(*list)[maxIndex-index], (*list)[index]
+	if len(*list) > 0 {
+		maxIndex := len(*list) - 1
+		for index := 0; index < (maxIndex/2)+1; index++ {
+			(*list)[index], (*list)[maxIndex-index] =
+				(*list)[maxIndex-index], (*list)[index]
+		}
 	}
 }
 
