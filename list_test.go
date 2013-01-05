@@ -7,10 +7,12 @@
 package simpletype
 
 import (
-	//"errors"
+	"errors"
 	"reflect"
 	"testing"
 )
+
+//=============================================================================
 
 var listAppendTests = []struct {
 	in  List
@@ -34,6 +36,8 @@ func TestListAppend(t *testing.T) {
 	}
 }
 
+//=============================================================================
+
 var listCountTests = []struct {
 	in  List
 	val interface{}
@@ -55,6 +59,8 @@ func TestListCount(t *testing.T) {
 		}
 	}
 }
+
+//=============================================================================
 
 var listDeleteTests = []struct {
 	in       List
@@ -86,6 +92,8 @@ func TestListDelete(t *testing.T) {
 	}
 }
 
+//=============================================================================
+
 var listExtendTests = []struct {
 	in        List
 	otherList List
@@ -110,6 +118,8 @@ func TestListExtend(t *testing.T) {
 	}
 }
 
+//=============================================================================
+
 var listIndexTests = []struct {
 	in       List
 	val      interface{}
@@ -117,21 +127,24 @@ var listIndexTests = []struct {
 	outError error
 }{
 	{List{"one", "two", "three", "two"}, "two", 1, nil},
-	//{List{"one", "two"}, "zero", -1, errors.New("zero is not in list")},
+	{List{"one", "two"}, "zero", -1, errors.New("zero is not in list")},
 	{List{1, 2, 3, 2}, 3, 2, nil},
-	//{List{}, 1, -1, errors.New("1 is not in list")},
+	{List{}, 1, -1, errors.New("1 is not in list")},
 }
 
 func TestListIndex(t *testing.T) {
 	for index, lit := range listIndexTests {
 		foundIndex, err := lit.in.Index(lit.val)
-		if foundIndex != lit.out || err != lit.outError {
+		if foundIndex != lit.out || (err == nil && err != lit.outError) ||
+			(err != nil && err.Error() != lit.outError.Error()) {
 			t.Errorf(
 				"%d. %v.Index(%v) => %v, %v, want %v, %v",
 				index, lit.in, lit.val, foundIndex, err, lit.out, lit.outError)
 		}
 	}
 }
+
+//=============================================================================
 
 var listInsertTests = []struct {
 	in       List
@@ -165,6 +178,33 @@ func TestListInsert(t *testing.T) {
 	}
 }
 
+//=============================================================================
+
+var listIsEqualTests = []struct {
+	in         List
+	secondList List
+	out        bool
+}{
+	{List{1, 2}, List{1, 2}, true},
+	{List{1, 2}, List{1, 2, 3}, false},
+	{List{1, 2}, List{2, 1}, false},
+	{List{}, List{}, true},
+}
+
+func TestIsEqualAppend(t *testing.T) {
+	for index, liet := range listIsEqualTests {
+		list := append(List{}, liet.in...)
+		val := list.IsEqual(liet.secondList)
+		if val != liet.out {
+			t.Errorf(
+				"%d. %v.IsEqual(%v) => %v, want %v",
+				index, liet.in, liet.secondList, val, liet.out)
+		}
+	}
+}
+
+//=============================================================================
+
 var listPopTests = []struct {
 	in       List
 	out      interface{}
@@ -193,6 +233,8 @@ func TestListPop(t *testing.T) {
 		}
 	}
 }
+
+//=============================================================================
 
 var listPopItemTests = []struct {
 	in       List
@@ -223,6 +265,8 @@ func TestListPopItem(t *testing.T) {
 	}
 }
 
+//=============================================================================
+
 var listRemoveTests = []struct {
 	in      List
 	val     interface{}
@@ -230,17 +274,18 @@ var listRemoveTests = []struct {
 	outList List
 }{
 	{List{"one", "two", "one"}, "one", nil, List{"two", "one"}},
-	//{List{"one", "two", "three"}, "zero",
-	//	0, errors.New("zero is not in list"), List{"one", "two", "three"}},
+	{List{"one", "two", "three"}, "zero",
+		errors.New("zero is not in list"), List{"one", "two", "three"}},
 	{List{1, 2, 3, 2}, 3, nil, List{1, 2, 2}},
-	//{List{}, 1, errors.New("1 is not in list"), List{}},
+	{List{}, 1, errors.New("1 is not in list"), List{}},
 }
 
 func TestListRemove(t *testing.T) {
 	for index, lrt := range listRemoveTests {
 		list := append(List{}, lrt.in...)
 		err := list.Remove(lrt.val)
-		if err != lrt.out {
+		if (err == nil && err != lrt.out) ||
+			(err != nil && err.Error() != lrt.out.Error()) {
 			t.Errorf(
 				"%d. %v.Remove(%v) => %v, want %v",
 				index, lrt.in, lrt.val, err, lrt.out)
@@ -252,6 +297,8 @@ func TestListRemove(t *testing.T) {
 		}
 	}
 }
+
+//=============================================================================
 
 var listReverseTests = []struct {
 	in  List
@@ -274,6 +321,8 @@ func TestListReverse(t *testing.T) {
 		}
 	}
 }
+
+//=============================================================================
 
 //var listSortTests = []struct {
 //	in  List
