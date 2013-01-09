@@ -345,3 +345,25 @@ func TestListReverse(t *testing.T) {
 //		}
 //	}
 //}
+
+//=============================================================================
+
+var listStringTests = []struct {
+	in  List
+	out string
+}{
+	{List{"one", "two", "three", "two"}, "one, two, three, two"},
+	{List{1, 2, 3, 2}, "1, 2, 3, 2"},
+	{List{}, ""},
+}
+
+func TestListString(t *testing.T) {
+	for index, lst := range listStringTests {
+		listString := lst.in.String()
+		if listString != lst.out {
+			t.Errorf(
+				"%d. %v.String() => %v, want %v",
+				index, lst.in, listString, lst.out)
+		}
+	}
+}
