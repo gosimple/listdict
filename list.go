@@ -129,14 +129,12 @@ func (list *List) PopItem(index int) (interface{}, error) {
 // Error if no match is found.
 func (list *List) Remove(val interface{}) error {
 	errorString := fmt.Sprintf("%v is not in list", val)
-	if len(*list) <= 0 {
-		return errors.New(errorString)
-	}
-
-	for index, listValue := range *list {
-		if listValue == val {
-			(*list).Delete(index)
-			return nil
+	if len(*list) > 0 {
+		for index, listValue := range *list {
+			if listValue == val {
+				(*list).Delete(index)
+				return nil
+			}
 		}
 	}
 	return errors.New(errorString)
