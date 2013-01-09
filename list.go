@@ -157,7 +157,7 @@ func (list *List) Reverse() {
 
 // String returns list values as string
 //		l := simpletype.List{"one", 2, "three"}
-// 		l.String() => one, 2, three
+// 		l.String() => "one, 2, three"
 func (list List) String() string {
 	var out []string
 	for _, val := range list {

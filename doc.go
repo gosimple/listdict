@@ -21,6 +21,6 @@ in Python.
 	// Keys() and Values() are unordered, same as in Python
 
 Requests or bugs? 
-<https://bitbucket.org/matrixik/simpletype/issues>
+https://bitbucket.org/matrixik/simpletype/issues
 */
 package simpletype
