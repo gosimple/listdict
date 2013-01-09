@@ -1,7 +1,7 @@
 ListDict
 ==========
 
-Package listdict implement similar to Python types: list and dict for Go
+Package ListDict implement Python types: list and dict for Go.
 
 [Documentation online](http://godoc.org/bitbucket.org/matrixik/listdict)
 

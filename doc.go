@@ -5,7 +5,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 /*
-Package ListDict implement similar to Python types: list and dict for Go
+Python List and Dict for Go
 
 This package bring list and dict to Go with most methods you can find 
 in Python.
