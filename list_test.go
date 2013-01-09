@@ -15,23 +15,24 @@ import (
 //=============================================================================
 
 var listAppendTests = []struct {
-	in  List
-	val interface{}
-	out List
+	in     List
+	values []interface{}
+	out    List
 }{
-	{List{"one", "two"}, "three", List{"one", "two", "three"}},
-	{List{"one", "two"}, 3, List{"one", "two", 3}},
-	{List{}, 1, List{1}},
+	{List{"one", "two"}, []interface{}{"three"}, List{"one", "two", "three"}},
+	{List{"one", "two"}, []interface{}{3}, List{"one", "two", 3}},
+	{List{}, []interface{}{1}, List{1}},
+	{List{}, []interface{}{1, "two", 3}, List{1, "two", 3}},
 }
 
 func TestListAppend(t *testing.T) {
 	for index, lat := range listAppendTests {
 		list := append(List{}, lat.in...)
-		list.Append(lat.val)
+		list.Append(lat.values...)
 		if !reflect.DeepEqual(list, lat.out) {
 			t.Errorf(
 				"%d. %v.Append(%v) => out list = %v, want %v",
-				index, lat.in, lat.val, list, lat.out)
+				index, lat.in, lat.values, list, lat.out)
 		}
 	}
 }

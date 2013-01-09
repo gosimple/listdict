@@ -34,7 +34,9 @@ var (
 //=============================================================================
 
 // Append adds an element to the end of the list.
-func (list *List) Append(obj interface{}) { *list = append(*list, obj) }
+func (list *List) Append(values ...interface{}) {
+	*list = append(*list, values...)
+}
 
 // Count returns the number of times value appears in the list.
 func (list List) Count(value interface{}) int {
