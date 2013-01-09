@@ -188,10 +188,9 @@ var listIsEqualTests = []struct {
 	{List{}, List{}, true},
 }
 
-func TestIsEqualAppend(t *testing.T) {
+func TestListIsEqual(t *testing.T) {
 	for index, liet := range listIsEqualTests {
-		list := append(List{}, liet.in...)
-		val := list.IsEqual(liet.secondList)
+		val := liet.in.IsEqual(liet.secondList)
 		if val != liet.out {
 			t.Errorf(
 				"%d. %v.IsEqual(%v) => %v, want %v",

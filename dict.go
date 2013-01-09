@@ -20,6 +20,13 @@ func NewDict() Dict {
 	return make(Dict)
 }
 
+var (
+	// ErrRemoveFromEmptyDict is returned when user want to remove element
+	// from empty dictionary
+	ErrRemoveFromEmptyDict = errors.
+		New("Trying to remove element from empty dict")
+)
+
 //=============================================================================
 
 // DictFromKeys creates a new dictionary with keys from list and values set 
@@ -41,7 +48,7 @@ func (dict Dict) Clear() {
 	}
 }
 
-// Get returns value for the given key or defaultVal if key is not in 
+// Get returns value for the given key or defaultVal if key is NOT in 
 // the dictionary. defaultVal should be same type as you expect to get.
 //		d := simpletype.Dict{"one": 1, "two": 2}
 // 		d["one"]          => 1
@@ -89,11 +96,12 @@ func (dict Dict) Keys() List {
 	return list
 }
 
-// If the given key is in the dictionary, remove it and return its value,
-// else return defaultVal. defaultVal should be same type as you expect to get.
+// Pop returns value and remove the given key from the dictionary.
+// If the given key is NOT in the dictionary return defaultVal.
+// defaultVal should be same type as you expect to get.
 func (dict Dict) Pop(key string, defaultVal interface{}) (interface{}, error) {
 	if len(dict) <= 0 {
-		return nil, errors.New("Pop from empty list")
+		return defaultVal, ErrRemoveFromEmptyDict
 	}
 	if dict.HasKey(key) {
 		val := dict[key]
@@ -103,17 +111,19 @@ func (dict Dict) Pop(key string, defaultVal interface{}) (interface{}, error) {
 	return defaultVal, nil
 }
 
-// Return and remove a random key-value pair as List from the dictionary.
+// PopItem return and remove a random key-value pair as List from
+// the dictionary.
 func (dict Dict) PopItem() (List, error) {
 	if len(dict) <= 0 {
-		return nil, errors.New("PopItem from empty list")
+		return List{}, ErrRemoveFromEmptyDict
 	}
+	list := NewList(2)
 	for key, value := range dict {
 		delete(dict, key)
-		list := List{key, value}
-		return list, nil
+		list = List{key, value}
+		break
 	}
-	return nil, nil
+	return list, nil
 
 }
 
