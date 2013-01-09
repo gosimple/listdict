@@ -71,7 +71,6 @@ var listDeleteTests = []struct {
 }{
 	{List{"one", "two", "three"}, 1, List{"one", "three"}, nil},
 	{List{"one"}, 0, List{}, nil},
-	{List{"one"}, 1, List{"one"}, ErrRange},
 	{List{}, 0, List{}, ErrRemoveFromEmptyList},
 }
 

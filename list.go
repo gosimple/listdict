@@ -22,12 +22,10 @@ func NewList(length int) List {
 }
 
 var (
-	// ErrRange is returned when index is bigger than list length
-	ErrRange = errors.New("Index out of range")
 	// ErrRemoveFromEmptyList is returned when user want to remove element
 	// from empty list
 	ErrRemoveFromEmptyList = errors.
-				New("Trying to remove element from empty list")
+		New("Trying to remove element from empty list")
 )
 
 //=============================================================================
@@ -55,9 +53,6 @@ func (list *List) Delete(index int) error {
 	}
 
 	listLen := len(*list)
-	if index >= listLen {
-		return ErrRange
-	}
 
 	copy((*list)[index:], (*list)[index+1:])
 	(*list)[listLen-1] = nil
@@ -124,12 +119,7 @@ func (list *List) PopItem(index int) (interface{}, error) {
 		return nil, ErrRemoveFromEmptyList
 	}
 
-	listLen := len(*list)
-	if index >= listLen {
-		return nil, ErrRange
-	}
 	val := (*list)[index]
-
 	(*list).Delete(index)
 
 	return val, nil
