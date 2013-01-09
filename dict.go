@@ -4,7 +4,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-package simpletype
+package listdict
 
 import (
 	"errors"
@@ -50,7 +50,7 @@ func (dict Dict) Clear() {
 
 // Get returns value for the given key or defaultVal if key is NOT in 
 // the dictionary. defaultVal should be same type as you expect to get.
-//		d := simpletype.Dict{"one": 1, "two": 2}
+//		d := listdict.Dict{"one": 1, "two": 2}
 // 		d["one"]          => 1
 // 		d.Get("one", 4)   => 1
 //		d["three"]        => error
@@ -129,7 +129,7 @@ func (dict Dict) PopItem() (List, error) {
 
 // SetDefault is like Get but will set dict[key] to defaultVal if key is not 
 // already in dict. defaultVal should be same type as you expect to get.
-// 		d := simpletype.Dict{"one": 1, "two": 2}
+// 		d := listdict.Dict{"one": 1, "two": 2}
 // 		d["one"]                 => 1
 // 		d.SetDefault("one", 4)   => 1
 //		d["three"]               => error

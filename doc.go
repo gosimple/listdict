@@ -5,12 +5,12 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 /*
-Package simpletype implement similar to Python types: list and dict for Go
+Package ListDict implement similar to Python types: list and dict for Go
 
 This package bring list and dict to Go with most methods you can find 
 in Python.
 
-	dict := simpletype.Dict{"one": 1, "two": 2, "three": 3}
+	dict := listdict.Dict{"one": 1, "two": 2, "three": 3}
 
 	if dict.HasKey("one") {
 		// Do something if dict have key "one"
@@ -21,6 +21,6 @@ in Python.
 	// Keys() and Values() are unordered, same as in Python
 
 Requests or bugs? 
-https://bitbucket.org/matrixik/simpletype/issues
+https://bitbucket.org/matrixik/listdict/issues
 */
-package simpletype
+package listdict

@@ -4,7 +4,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-package simpletype
+package listdict
 
 import (
 	"errors"
@@ -156,7 +156,7 @@ func (list *List) Reverse() {
 //}
 
 // String returns list values as string
-//		l := simpletype.List{"one", 2, "three"}
+//		l := listdict.List{"one", 2, "three"}
 // 		l.String() => "one, 2, three"
 func (list List) String() string {
 	var out []string
