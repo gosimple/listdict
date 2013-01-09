@@ -32,7 +32,7 @@ func TestListAppend(t *testing.T) {
 		if !reflect.DeepEqual(list, lat.out) {
 			t.Errorf(
 				"%d. %v.Append(%v) => out list = %v, want %v",
-				index, lat.in, lat.values, list, lat.out)
+				index, lat.in, List(lat.values).String(), list, lat.out)
 		}
 	}
 }
@@ -148,33 +148,31 @@ func TestListIndex(t *testing.T) {
 //=============================================================================
 
 var listInsertTests = []struct {
-	in       List
-	index    int
-	val      interface{}
-	outList  List
-	outError error
+	in      List
+	index   int
+	val     []interface{}
+	outList List
 }{
 	{List{"one", "two", "three"},
-		1, "inserted",
-		List{"one", "inserted", "two", "three"}, nil},
+		1, []interface{}{"inserted"},
+		List{"one", "inserted", "two", "three"}},
 	{List{"one", "two", "three"},
-		10, "four",
-		List{"one", "two", "three", "four"}, nil},
+		10, []interface{}{"four"},
+		List{"one", "two", "three", "four"}},
+	{List{"one", "two", "three"},
+		1, []interface{}{"1.1", 1.2, "1.3"},
+		List{"one", "1.1", 1.2, "1.3", "two", "three"}},
 }
 
 func TestListInsert(t *testing.T) {
 	for index, lit := range listInsertTests {
 		list := append(List{}, lit.in...)
-		err := list.Insert(lit.index, lit.val)
-		if err != lit.outError {
-			t.Errorf(
-				"%d. %v.Insert(%v, %v) => %v, want %v",
-				index, lit.in, lit.index, lit.val, err, lit.outError)
-		}
+		list.Insert(lit.index, lit.val...)
 		if !reflect.DeepEqual(list, lit.outList) {
 			t.Errorf(
 				"%d. %v.Insert(%v, %v) => out list = %v, want %v",
-				index, lit.in, lit.index, lit.val, list, lit.outList)
+				index, lit.in, lit.index, List(lit.val).String(),
+				list, lit.outList)
 		}
 	}
 }

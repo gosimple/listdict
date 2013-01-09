@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"strings"
 )
 
 // Simple list
@@ -173,3 +174,14 @@ func (list *List) Reverse() {
 // Sort the list in place ordering elements from smallest to largest.
 //func (list *List) Sort() {
 //}
+
+// String returns list values as string
+//		l := simpletype.List{"one", 2, "three"}
+// 		l.String() => one, 2, three
+func (list List) String() string {
+	var out []string
+	for _, val := range list {
+		out = append(out, fmt.Sprintf("%v", val))
+	}
+	return strings.Join(out, ", ")
+}
