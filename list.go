@@ -90,19 +90,18 @@ func (list List) Index(val interface{}) (int, error) {
 
 // Insert an element at a given position. If the position is past the end 
 // of the list, append to the end.
-func (list *List) Insert(index int, val interface{}) error {
-	if index < 0 {
-		return ErrBounds
-	}
+func (list *List) Insert(index int, values ...interface{}) {
 
 	if len(*list) > index {
-		*list = append(*list, 0)
-		copy((*list)[index+1:], (*list)[index:])
-		(*list)[index] = val
+		for i := 0; i < len(values); i++ {
+			*list = append(*list, 0)
+		}
+
+		copy((*list)[index+len(values):], (*list)[index:])
+		copy((*list)[index:], values)
 	} else {
-		*list = append(*list, val)
+		*list = append(*list, values...)
 	}
-	return nil
 }
 
 // IsEqual returns true if lists are equal.
