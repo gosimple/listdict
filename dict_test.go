@@ -11,83 +11,159 @@ import (
 	"testing"
 )
 
+//=============================================================================
+
+var dictFromKeysTests = []struct {
+	in         List
+	defaultVal interface{}
+	out        Dict
+}{
+	{List{"one", "two", "three"}, nil,
+		Dict{"one": nil, "two": nil, "three": nil}},
+	{List{1, 2}, 1, Dict{"1": 1, "2": 1}},
+	{List{}, nil, Dict{}},
+}
+
 func TestDictFromKeys(t *testing.T) {
-	list := List{"one", "two", "three"}
-	dict := DictFromKeys(list, nil)
+	for index, dfkt := range dictFromKeysTests {
+		dict := DictFromKeys(dfkt.in, dfkt.defaultVal)
 
-	goodDict := Dict{"one": nil, "two": nil, "three": nil}
-
-	if !reflect.DeepEqual(dict, goodDict) {
-		t.Errorf("Should be %v, got %v", goodDict, dict)
+		if !reflect.DeepEqual(dict, dfkt.out) {
+			t.Errorf(
+				"%d. DictFromKeys(%v, %v) => out dict = %v, want %v",
+				index, dfkt.in, dfkt.defaultVal, dict, dfkt.out)
+		}
 	}
+}
+
+//=============================================================================
+
+var dictClearTests = []struct {
+	in  Dict
+	out Dict
+}{
+	{Dict{"one": 1, "two": 2, "three": 3}, Dict{}},
+	{Dict{"one": List{1, 2}}, Dict{}},
+	{Dict{}, Dict{}},
 }
 
 func TestDictClear(t *testing.T) {
-	dict := Dict{"one": 1, "two": 2, "three": 3}
-	dict.Clear()
+	for index, dct := range dictClearTests {
+		dict := NewDict()
+		for key, val := range dct.in {
+			dict[key] = val
+		}
 
-	if len(dict) != 0 {
-		t.Errorf("Dict length should be 0, got %v", len(dict))
+		dict.Clear()
+
+		if len(dict) != 0 {
+			t.Fatalf("%d. len(%v.Clear()) => %v, should be 0",
+				index, dct.in, len(dict))
+		}
+		if !reflect.DeepEqual(dict, dct.out) {
+			t.Errorf(
+				"%d. %v.Clear() => out dict = %v, want %v",
+				index, dct.in, dict, dct.out)
+		}
 	}
+}
+
+//=============================================================================
+
+var dictGetTests = []struct {
+	in         Dict
+	key        string
+	defaultVal interface{}
+	out        interface{}
+}{
+	{Dict{"one": 1, "two": 2, "three": 3}, "one", 0, 1},
+	{Dict{"one": 1}, "two", 0, 0},
+	{Dict{}, "one", 0, 0},
 }
 
 func TestDictGet(t *testing.T) {
-	dict := Dict{"one": 1, "two": 2, "three": 3}
+	for index, dgt := range dictGetTests {
+		dict := NewDict()
+		for key, val := range dgt.in {
+			dict[key] = val
+		}
 
-	goodValue := dict.Get("one", 0)
-	if goodValue != 1 {
-		t.Errorf("Dict value should be 1, got %v", goodValue)
-	}
+		myValue := dict.Get(dgt.key, dgt.defaultVal)
 
-	badValue := dict.Get("four", 0)
-	switch {
-	case badValue != 0:
-		t.Errorf("Return value should be 0, got %v", badValue)
-	case dict.HasKey("four"):
-		t.Errorf("Dict should not have 'four' key")
+		switch {
+		case myValue != dgt.out:
+			t.Errorf("%d. %v.Get(%v, %v) => %v, want 0",
+				index, dgt.in, dgt.key, dgt.defaultVal, myValue, dgt.out)
+		case dict.HasKey(dgt.key) && !dgt.in.HasKey(dgt.key):
+			t.Errorf("%d. %v.Get(%v, %v) => out dict should not have '%v' key",
+				index, dgt.in, dgt.key, dgt.defaultVal, dgt.key)
+		}
 	}
+}
+
+//=============================================================================
+
+var dictHasKeyTests = []struct {
+	in  Dict
+	key string
+	out bool
+}{
+	{Dict{"one": 1, "two": 2, "three": 3}, "one", true},
+	{Dict{"one": 1}, "two", false},
+	{Dict{}, "one", false},
 }
 
 func TestDictHasKey(t *testing.T) {
-	dict := Dict{"one": 1, "two": 2, "three": 3}
+	for index, dhkt := range dictHasKeyTests {
+		var keyTest bool
+		if _, ok := dhkt.in[dhkt.key]; ok {
+			keyTest = true
+		} else {
+			keyTest = false
+		}
 
-	goodValue := dict.HasKey("one")
-	if goodValue != true {
-		t.Errorf("Dict key check should be 'true', got '%v'", goodValue)
-	}
-
-	badValue := dict.HasKey("four")
-	if badValue != false {
-		t.Errorf("Dict key check should be 'true', got '%v'", badValue)
+		if keyTest != dhkt.out {
+			t.Errorf("%d. %v.HasKey(%v) => %v, want %v",
+				index, dhkt.in, dhkt.key, keyTest, dhkt.out)
+		}
 	}
 }
 
-func TestDictItems(t *testing.T) {
-	dict := Dict{"one": 1, "two": 2, "three": 3}
-	goodItems := []List{List{"one", 1}, List{"two", 2}, List{"three", 3}}
-	itemList := dict.Items()
+//=============================================================================
 
-	if len(goodItems) != len(itemList) {
-		t.Errorf(
-			"Item list length should be %v, got %v",
-			len(goodItems),
-			len(itemList),
-		)
-	}
-	founded := 0
-	for _, listItem := range goodItems {
-		for _, dictItem := range itemList {
-			if reflect.DeepEqual(dictItem, listItem) {
-				founded++
+var dictItemsTests = []struct {
+	in  Dict
+	out []List
+}{
+	{Dict{"one": 1, "two": 2, "three": 3},
+		[]List{List{"one", 1}, List{"two", 2}, List{"three", 3}}},
+	{Dict{"one": 1}, []List{List{"one", 1}}},
+	{Dict{}, []List{}},
+}
+
+func TestDictItems(t *testing.T) {
+	for index, dit := range dictItemsTests {
+
+		itemList := dit.in.Items()
+
+		founded := 0
+		for _, listItem := range dit.out {
+			for _, dictItem := range itemList {
+				if reflect.DeepEqual(dictItem, listItem) {
+					founded++
+				}
 			}
 		}
-	}
-	if founded != len(itemList) {
-		t.Errorf(
-			"Should found %v same list elements, got %v",
-			len(goodItems),
-			len(itemList),
-		)
+
+		switch {
+		case len(dit.out) != len(itemList):
+			t.Errorf("%d. len(%v.Items()) => %d, should be %d",
+				index, dit.in, len(itemList), len(dit.out))
+		case founded != len(itemList):
+			t.Errorf("%d. compare %v.Items() and %v => "+
+				"found %v same list elements, shoud found %v",
+				index, dit.in, dit.out, founded, len(itemList))
+		}
 	}
 }
 
