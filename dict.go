@@ -29,7 +29,7 @@ var (
 
 //=============================================================================
 
-// DictFromKeys creates a new dictionary with keys from list and values set 
+// DictFromKeys creates a new dictionary with keys from list and values set
 // to defaultVal.
 func DictFromKeys(list List, defaultVal interface{}) Dict {
 	newDict := NewDict()
@@ -48,7 +48,7 @@ func (dict Dict) Clear() {
 	}
 }
 
-// Get returns value for the given key or defaultVal if key is NOT in 
+// Get returns value for the given key or defaultVal if key is NOT in
 // the dictionary. defaultVal should be same type as you expect to get.
 //		d := listdict.Dict{"one": 1, "two": 2}
 // 		d["one"]          => 1
@@ -127,7 +127,7 @@ func (dict Dict) PopItem() (List, error) {
 
 }
 
-// SetDefault is like Get but will set dict[key] to defaultVal if key is not 
+// SetDefault is like Get but will set dict[key] to defaultVal if key is not
 // already in dict. defaultVal should be same type as you expect to get.
 // 		d := listdict.Dict{"one": 1, "two": 2}
 // 		d["one"]                 => 1
@@ -143,7 +143,7 @@ func (dict Dict) SetDefault(key string, defaultVal interface{}) interface{} {
 	return defaultVal
 }
 
-// Update updates the dictionary with the key-value pairs in the dict2 
+// Update updates the dictionary with the key-value pairs in the dict2
 // dictionary replacing current values and adding new if found.
 func (dict Dict) Update(dict2 Dict) {
 	for key, value := range dict2 {

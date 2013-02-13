@@ -79,7 +79,7 @@ func (list List) Index(val interface{}) (int, error) {
 	return -1, errors.New(errorString)
 }
 
-// Insert an element at a given position. If the position is past the end 
+// Insert an element at a given position. If the position is past the end
 // of the list, append to the end.
 func (list *List) Insert(index int, values ...interface{}) {
 
@@ -125,7 +125,7 @@ func (list *List) PopItem(index int) (interface{}, error) {
 	return val, nil
 }
 
-// Remove the first element from the list whose value matches the given value. 
+// Remove the first element from the list whose value matches the given value.
 // Error if no match is found.
 func (list *List) Remove(val interface{}) error {
 	errorString := fmt.Sprintf("%v is not in list", val)
