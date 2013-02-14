@@ -39,6 +39,33 @@ func TestListAppend(t *testing.T) {
 
 //=============================================================================
 
+var listAppendIfMissingTests = []struct {
+	in    List
+	value interface{}
+	out   List
+}{
+	{List{"one", "two"}, "three", List{"one", "two", "three"}},
+	{List{"one", "two"}, 3, List{"one", "two", 3}},
+	{List{}, 1, List{1}},
+	{List{}, "one", List{"one"}},
+	{List{"one", "two"}, "two", List{"one", "two"}},
+	{List{"one", 1}, 1, List{"one", 1}},
+}
+
+func TestListAppendIfMissing(t *testing.T) {
+	for index, laimt := range listAppendIfMissingTests {
+		list := append(List{}, laimt.in...)
+		list.AppendIfMissing(laimt.value)
+		if !reflect.DeepEqual(list, laimt.out) {
+			t.Errorf(
+				"%d. %v.AppendIfMissing(%v) => out list = %v, want %v",
+				index, laimt.in, laimt.value, list, laimt.out)
+		}
+	}
+}
+
+//=============================================================================
+
 var listCountTests = []struct {
 	in  List
 	val interface{}

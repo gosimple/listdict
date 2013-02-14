@@ -35,6 +35,19 @@ func (list *List) Append(values ...interface{}) {
 	*list = append(*list, values...)
 }
 
+// AppendIfMissing adds an element to the end of the list if it's not already
+// in the list.
+func (list *List) AppendIfMissing(value interface{}) {
+	for _, ele := range *list {
+		if ele == value {
+			// Element exists, exit
+			goto exit
+		}
+	}
+	*list = append(*list, value)
+exit:
+}
+
 // Count returns the number of times value appears in the list.
 func (list List) Count(value interface{}) int {
 	counter := 0
