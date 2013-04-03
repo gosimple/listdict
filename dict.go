@@ -9,7 +9,9 @@ package listdict
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 	"reflect"
+	"time"
 )
 
 // Simple dict.
@@ -26,6 +28,10 @@ var (
 	ErrRemoveFromEmptyDict = errors.
 		New("Trying to remove element from empty dict")
 )
+
+func init() {
+	rand.Seed(time.Now().UTC().UnixNano())
+}
 
 //=============================================================================
 
@@ -117,12 +123,17 @@ func (dict Dict) PopItem() (List, error) {
 	if len(dict) <= 0 {
 		return List{}, ErrRemoveFromEmptyDict
 	}
+
+	// Get dict keys
+	dictKeys := dict.Keys()
+	// Return random key as string
+	randKey := fmt.Sprintf("%v", dictKeys[rand.Intn(len(dictKeys))])
+
 	list := NewList(2)
-	for key, value := range dict {
-		delete(dict, key)
-		list = List{key, value}
-		break
-	}
+	list = List{randKey, dict[randKey]}
+
+	delete(dict, randKey)
+
 	return list, nil
 
 }
