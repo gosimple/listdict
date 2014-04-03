@@ -3,7 +3,7 @@ ListDict
 
 Package ListDict implement Python types: list and dict for Go.
 
-[Documentation online](http://godoc.org/bitbucket.org/gosimple/listdict)
+[Documentation online](http://godoc.org/github.com/gosimple/listdict)
 
 This package bring list and dict to Go with most methods you can find 
 in Python.
@@ -19,11 +19,11 @@ in Python.
 	// Keys() and Values() are unordered, same as in Python
 
 ### Requests or bugs? 
-<https://bitbucket.org/gosimple/listdict/issues>
+<https://github.com/gosimple/listdict/issues>
 
 ## Installation
 
-	go get bitbucket.org/gosimple/listdict
+	go get github.com/gosimple/listdict
 
 ## License
 
