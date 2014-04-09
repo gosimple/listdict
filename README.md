@@ -3,6 +3,9 @@ ListDict
 
 Package ListDict implement Python types: list and dict for Go.
 
+[![GoDoc](https://godoc.org/github.com/gosimple/listdict?status.png)](https://godoc.org/github.com/gosimple/listdict)
+[![Build Status](https://drone.io/github.com/gosimple/listdict/status.png)](https://drone.io/github.com/gosimple/listdict/latest)
+
 [Documentation online](http://godoc.org/github.com/gosimple/listdict)
 
 This package bring list and dict to Go with most methods you can find 
